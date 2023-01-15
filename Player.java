@@ -37,7 +37,7 @@ public class Player {
 
     public void turn(Player player) {
         Scanner sc = new Scanner(System.in);
-        System.out.println(this);
+        System.out.println(this.getPokemon().toString() + ". Enemy - "+ player.pokemon.toString());
         System.out.println("Choose the action: 1 - Use any abilities, 2 - Skip, 3 - EVO, 4 - Ultimate");
         switch (sc.nextInt()) {
             case 1 -> {
@@ -51,9 +51,9 @@ public class Player {
                 final int costManaLvl1 = 25;
                 final int costManaLvl2 = 40;
                 if (this.pokemon.getCurrentLvl() < this.pokemon.getMaxLvl()) {
-                    if (this.pokemon.getCurrentLvl() == 1 || this.pokemon.getCurrentHp() > costHpLvl1 || this.pokemon.isEnoughAtkPts(costManaLvl1)) {
+                    if (this.pokemon.getCurrentLvl() == 1 && this.pokemon.getCurrentHp() > costHpLvl1 && this.pokemon.isEnoughAtkPts(costManaLvl1)) {
                         this.pokemon.evolution();
-                    } else if (this.pokemon.getCurrentLvl() == 2 || this.pokemon.getCurrentHp() > costHpLvl2 || this.pokemon.isEnoughAtkPts(costManaLvl2)) {
+                    } else if (this.pokemon.getCurrentLvl() == 2 && this.pokemon.getCurrentHp() > costHpLvl2 && this.pokemon.isEnoughAtkPts(costManaLvl2)) {
                         this.pokemon.evolution();
                     } else {
                         System.out.println("Not enough Hp or Mana!");
@@ -67,6 +67,7 @@ public class Player {
             case 4 -> ultimate(player);
         }
     }
+
     public void ultimate(Player player) {
         if (this.pokemon instanceof Electric) {
             if (((Electric) this.pokemon).isUltimateReady()) {
@@ -84,7 +85,7 @@ public class Player {
         }
     }
 
-    public void randomSkill(Player player){
+    public void randomSkill(Player player) {
         Random rn = new Random();
         int choose;
         choose = rn.nextInt(3) + 1;
@@ -105,18 +106,18 @@ public class Player {
         int chance = rn.nextInt(3);
         if (chance == 0) {
             a = this.pokemon.getCurrentHp() + rn.nextInt(25) + 5;
-            if (a > this.pokemon.getMaxHp()) {
-                this.pokemon.setCurrentHp(this.pokemon.getMaxHp());
-            } else {
+            if (this.pokemon.isHpFullToAdd(a)) {
                 this.pokemon.setCurrentHp(a);
+            } else {
+                this.pokemon.setCurrentHp(this.pokemon.getMaxHp());
             }
             System.out.println("Now your Hp: " + this.pokemon.getCurrentHp());
         } else if (chance == 1) {
             b = this.pokemon.getCurrentAttackPoints() + rn.nextInt(25) + 5;
-            if (b > this.pokemon.getCurrentAttackPoints()) {
-                this.pokemon.setCurrentAttackPoints(this.pokemon.getMaxHp());
-            } else {
+            if (this.pokemon.isManaFullToAdd(b)) {
                 this.pokemon.setCurrentAttackPoints(b);
+            } else {
+                this.pokemon.setCurrentAttackPoints(this.pokemon.getMaxHp());
             }
             System.out.println("Now your Mana: " + this.pokemon.getCurrentAttackPoints());
         } else {

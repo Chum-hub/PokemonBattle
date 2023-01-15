@@ -84,7 +84,7 @@ public abstract class Pokemon {
         return currentLvl;
     }
     public void kick(Pokemon pokemon) {
-        pokemon.dealDmg(2);
+        pokemon.dealDmg(100);
     }
     public void dealDmg(int dmg) {
         this.currentHp -= dmg;
@@ -104,6 +104,7 @@ public abstract class Pokemon {
         if (this instanceof Electric) {
             minDmg *= ((Electric) this).getCurrentCharge();
             maxDmg *= ((Electric) this).getCurrentCharge();
+            dmg *= ((Electric) this).getCurrentCharge();
         }
         if (isEnoughAtkPts(costAttackPts) && dmg == 0) {
             this.currentAttackPoints -= costAttackPts;
@@ -119,11 +120,19 @@ public abstract class Pokemon {
         getHpPerTurn();
     }
     public void getManaPerTurn() {
-        this.setCurrentAttackPoints(this.getCurrentAttackPoints() + 5);
+        if (isManaFullToAdd(5)) {
+            this.setCurrentAttackPoints(this.getCurrentAttackPoints() + 5);
+        } else {
+            this.setCurrentAttackPoints(this.getMaxAttackPoints());
+        }
         System.out.println("+5 mana");
     }
     public void getHpPerTurn() {
-        this.setCurrentHp(this.getCurrentHp() + 5);
+        if (isHpFullToAdd(5)){
+            this.setCurrentHp(this.getCurrentHp() + 5);
+        } else {
+            this.setCurrentHp(this.getMaxHp());
+        }
         System.out.println("+5 Hp");
     }
     public void evolution() {
@@ -139,6 +148,15 @@ public abstract class Pokemon {
                 break;
             }
         }
+    }
+    public boolean isManaFullToAdd(int mana){
+        return this.getCurrentAttackPoints() + mana > this.getCurrentAttackPoints();
+    }
+    public boolean isManaFullToAdd(double mana){
+        return this.getCurrentAttackPoints() + mana > this.getCurrentAttackPoints();
+    }
+    public boolean isHpFullToAdd(int hp){
+        return this.getCurrentHp() + hp > this.getCurrentHp();
     }
 
 }
