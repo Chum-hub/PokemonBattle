@@ -8,10 +8,10 @@ public class Main {
         display();
         pl1.setName(sc.nextLine());
         pl1.choosePokemonType();
+        System.out.println(pl1.toString() + " and your " + pl1.getPokemon().toString());
         display();
         pl2.setName(sc.nextLine());
         pl2.choosePokemonType();
-        System.out.println(pl1.toString() + " and your " + pl1.getPokemon().toString());
         System.out.println(pl2.toString() + " and your " + pl2.getPokemon().toString());
 
         while (!pl1.getPokemon().isDead() && !pl2.getPokemon().isDead()) {

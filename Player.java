@@ -23,8 +23,7 @@ public class Player {
 
     public void choosePokemonType() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Choose the pokemon type: 1 - Charmander, 2 - Salandit, 3 - Moltres, 4 - Pichu," + '\'' +
-                "5 - Blizle, 6 - Electabuz");
+        System.out.println("Choose the pokemon type: 1 - Charmander, 2 - Salandit, 3 - Moltres, 4 - Pichu," + "5 - Blizle, 6 - Electabuz");
         switch (sc.nextInt()) {
             case 1 -> this.pokemon = new Fire("Charmander");
             case 2 -> this.pokemon = new Fire("Salandit");
@@ -37,11 +36,10 @@ public class Player {
 
     public void turn(Player player) {
         Scanner sc = new Scanner(System.in);
-        System.out.println(this.getPokemon().toString() + ". Enemy - "+ player.pokemon.toString());
+        System.out.println("Player: " + this.name+ ", " + this.getPokemon().toString() + ". Enemy - "+ player.pokemon.toString());
         System.out.println("Choose the action: 1 - Use any abilities, 2 - Skip, 3 - EVO, 4 - Ultimate");
         switch (sc.nextInt()) {
             case 1 -> {
-                System.out.println(this.pokemon.toString());
                 chooseSkill(player);
             }
             case 2 -> skip();
@@ -78,11 +76,15 @@ public class Player {
                 System.out.println("Your Ultimate more is not allow to use!");
             }
         } else {
+
+            this.pokemon.setCurrentAttackPoints(this.pokemon.getMaxAttackPoints());
             randomSkill(player);
+            this.pokemon.setCurrentAttackPoints(this.pokemon.getMaxAttackPoints());
             randomSkill(player);
             this.pokemon.setCurrentAttackPoints(0);
             this.pokemon.setCurrentHp((this.pokemon.getCurrentHp() / 2));
         }
+        System.out.println(this.getPokemon().toString() + ". Enemy - "+ player.pokemon.toString());
     }
 
     public void randomSkill(Player player) {
